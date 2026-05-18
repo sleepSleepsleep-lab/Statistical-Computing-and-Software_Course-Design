@@ -1,0 +1,4 @@
+=== 04. Qwen2.5-7B (Zero-shot) ===
+耗时: 43.84 s | 速度: 58.03 Tokens/s
+Accuracy: 0.9000 | Precision: 0.9251 | Recall: 0.8734 | F1: 0.8985
+

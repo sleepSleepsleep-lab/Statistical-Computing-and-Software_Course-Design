@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git rm --cached body/abstract.aux body/acknowledgement.aux body/chapter1.aux body/chapter2.aux body/chapter3.aux body/chapter4.aux main.log main.out main.toc main.bbl main.blg main.bcf \"main.synctex(busy)\" main.synctex.gz main.run.xml texput.log)",
+      "Bash(git rm:*)",
+      "Bash(git reset:*)",
+      "Bash(rm:*)",
+      "Bash(git init:*)"
+    ],
+    "deny": []
+  }
+}

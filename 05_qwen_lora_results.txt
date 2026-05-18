@@ -1,0 +1,4 @@
+=== 05. Qwen2.5-7B (LoRA, Epochs: 10) ===
+训练耗时: 1414.10 s | 测试耗时: 7.19 s
+Accuracy: 0.9567 | Precision: 0.9633 | Recall: 0.9507 | F1-Score: 0.9570
+

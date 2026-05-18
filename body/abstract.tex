@@ -1,0 +1,18 @@
+\begin{abstract}
+随着大语言模型的发展，中文情感分析从传统统计方法进入了深度预训练阶段。但在实际应用中，如何在 SVM、Bi-LSTM、BERT 等模型的精度和计算成本之间做取舍，仍缺少系统的量化依据。
+
+本文基于开源数据集 ChnSentiCorp（9,600 训练 / 1,200 验证 / 1,200 测试），在统一硬件与软件环境下，对比了 SVM + TF-IDF、Bi-LSTM、BERT-base 微调、Qwen2.5-7B 零样本推理和 Qwen2.5-7B LoRA 微调五类模型，并引入早停机制保证公平。实验表明：(1)~预训练是精度突破的关键——BERT 微调（F1=0.9521）比 Bi-LSTM（F1=0.9003）高出 5.18 个百分点；(2)~LoRA 使 Qwen-7B 的 F1 从 0.8985 跃升到 0.9570，四项指标均为最优；(3)~Qwen-LoRA 对 BERT 的精度优势仅 0.49 个百分点，从训练时间来看，训练成本却是 7.66 倍，参数规模扩大的边际收益递减明显；(4)~轻量级 SVM（F1=0.8944，训练 0.32s）在计算经济性上仍有不可替代的位置。本文为中文情感分析的模型选型提供了量化参考。
+
+\keywords{中文情感分析；预训练语言模型；LoRA 微调；大语言模型；模型对比评估}
+\end{abstract}
+
+\clearpage
+
+\begin{enabstract}
+
+With the rise of large language models, Chinese sentiment analysis has shifted from traditional statistical methods to deep pre-training approaches. Yet in practice, there remains no systematic quantitative basis for balancing accuracy against computational cost when choosing among models such as SVM, Bi-LSTM, and BERT.
+
+Using the open-source ChnSentiCorp dataset (9,600 training / 1,200 validation / 1,200 test), this study compares five models under uniform hardware and software: SVM + TF-IDF, Bi-LSTM, BERT-base fine-tuned, Qwen2.5-7B zero-shot, and Qwen2.5-7B LoRA fine-tuned. An early stopping mechanism was applied to ensure fair comparison.The results show: (1) pre-training is the key to the accuracy breakthrough---BERT (F1=0.9521) outperforms Bi-LSTM (F1=0.9003) by 5.18 percentage points; (2) LoRA lifts Qwen-7B from F1=0.8985 to 0.9570, ranking first across all four metrics; (3) Qwen-LoRA's accuracy edge over BERT is only 0.49 percentage points, yet in terms of training time, its cost is 7.66$\times$ higher, revealing significant diminishing marginal returns from parameter scaling; (4) the lightweight SVM (F1=0.8944, 0.32s training) remains irreplaceable in computational economy. This study provides a quantitative reference for model selection in Chinese sentiment analysis.
+
+\enkeywords{Chinese Sentiment Analysis; Pre-trained Language Models; LoRA Fine-tuning; Large Language Models; Model Comparative Evaluation}
+\end{enabstract}
