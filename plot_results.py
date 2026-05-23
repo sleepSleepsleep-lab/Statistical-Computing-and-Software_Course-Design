@@ -49,16 +49,19 @@ plt.rcParams.update({
 MODELS_SHORT = ["SVM", "Bi-LSTM", "BERT", "Qwen\nZero-shot", "Qwen\nLoRA"]
 MODELS_ONELINE = ["SVM", "Bi-LSTM", "BERT", "Qwen Zero-shot", "Qwen LoRA"]
 
-# 5 色专业渐变配色 (蓝色→橙色→青色→紫色→朱红)
+# 统一高级配色方案 — 五模型专业色系 (蓝→橙→绿→紫→红)
 C = {
-    "svm":        "#2471A3",  # 传统统计-深蓝
-    "lstm":       "#E67E22",  # 深度学习-橘色
-    "bert":       "#27AE60",  # 预训练最佳-翠绿
-    "qwen_zero":  "#8E44AD",  # 零样本-紫色
-    "qwen_lora":  "#C0392B",  # 微调-深红
-    "best_hl":    "#F9E79F",  # 高亮底色-鹅黄
+    "svm":        "#4472C4",  # 数据蓝
+    "lstm":       "#ED7D31",  # 暖橘
+    "bert":       "#70AD47",  # 松石绿
+    "qwen_zero":  "#9B59B6",  # 紫罗兰
+    "qwen_lora":  "#C00000",  # 卓越红
+    "best_hl":    "#FFF2CC",  # 高亮底色-杏仁黄
+    "metric_a":   "#4472C4",  # 指标A（蓝）— 用于分组柱状图左柱
+    "metric_b":   "#C44E52",  # 指标B（砖红）— 用于分组柱状图右柱
 }
 COLORS = [C["svm"], C["lstm"], C["bert"], C["qwen_zero"], C["qwen_lora"]]
+C_EDGE = ["#2B579A", "#C55A11", "#4F8A26", "#723B8E", "#8A0000"]
 
 # ---- 原始数据 ----
 accuracy  = [0.8933, 0.8983, 0.9517, 0.9000, 0.9567]
@@ -88,12 +91,12 @@ def style_ax(ax):
     ax.grid(axis="y", alpha=0.25, linestyle=(0, (3, 4)), color="#aaaaaa", zorder=0)
 
 
-def label_bars(ax, bars, fmt="{:.4f}", offset=0.004, color="#333333", fontsize=8.5):
+def label_bars(ax, bars, fmt="{:.4f}", offset=0.004, fontsize=8.5):
     for bar in bars:
         h = bar.get_height()
         ax.text(bar.get_x() + bar.get_width() / 2., h + offset,
                 fmt.format(h), ha="center", va="bottom",
-                fontsize=fontsize, fontweight="bold", color=color)
+                fontsize=fontsize, fontweight="bold", color="#333333")
 
 
 # ============================================================
@@ -106,9 +109,9 @@ def fig_d1_performance():
     gap = 0.02
 
     b1 = ax.bar(x - w/2 - gap, accuracy, w, label="Accuracy",
-                color="#2C3E50", edgecolor="white", linewidth=0.5, zorder=3)
+                color=C["metric_a"], edgecolor="white", linewidth=0.5, zorder=3)
     b2 = ax.bar(x + w/2 + gap, f1, w, label="F1-Score",
-                color=C["bert"], edgecolor="white", linewidth=0.5, zorder=3)
+                color=C["metric_b"], edgecolor="white", linewidth=0.5, zorder=3)
 
     label_bars(ax, b1, offset=0.002, fontsize=7.5)
     label_bars(ax, b2, offset=0.002, fontsize=7.5)
@@ -119,11 +122,11 @@ def fig_d1_performance():
     ax.annotate("Best", xy=(best_idx, 0.955), fontsize=9, fontweight="bold",
                 color="#8B0000", ha="center",
                 bbox=dict(boxstyle="round,pad=0.3", facecolor="#fff2cc",
-                          edgecolor="#e6c300", alpha=0.9))
+                          edgecolor="#B8860B", alpha=0.9))
 
     ax.set_xticks(x)
     ax.set_xticklabels(MODELS_SHORT, fontsize=10.5)
-    ax.set_ylabel("Score", fontsize=12, fontweight="bold", color="#2C3E50")
+    ax.set_ylabel("Score", fontsize=12, fontweight="bold", color="#333333")
     ax.set_ylim(0.865, 0.965)
     ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.3f"))
     ax.legend(loc="lower right", frameon=True, fontsize=10.5,
@@ -157,7 +160,7 @@ def fig_d2_train_time():
     ax.set_yscale("log")
     ax.set_xticks(x)
     ax.set_xticklabels(MODELS_SHORT, fontsize=10.5)
-    ax.set_ylabel("Training Time (s, log scale)", fontsize=12, fontweight="bold", color="#2C3E50")
+    ax.set_ylabel("Training Time (s, log scale)", fontsize=12, fontweight="bold", color="#333333")
     ax.set_ylim(0.15, 3500)
     ax.yaxis.set_major_formatter(mticker.ScalarFormatter())
     style_ax(ax)
@@ -191,7 +194,7 @@ def fig_d3_infer_time():
     ax.set_yscale("log")
     ax.set_xticks(x)
     ax.set_xticklabels(MODELS_SHORT, fontsize=10.5)
-    ax.set_ylabel("Inference Time (s, log scale)", fontsize=12, fontweight="bold", color="#2C3E50")
+    ax.set_ylabel("Inference Time (s, log scale)", fontsize=12, fontweight="bold", color="#333333")
     ax.set_ylim(0.015, 200)
     ax.yaxis.set_major_formatter(mticker.ScalarFormatter())
     style_ax(ax)
@@ -205,7 +208,7 @@ def fig_d3_infer_time():
 def fig_d4_tradeoff():
     fig, ax = plt.subplots(figsize=(8.0, 5.2))
     sizes = [220, 220, 380, 320, 420]
-    edge_colors = ["#1a5276", "#ba4a00", "#1e8449", "#6c3483", "#922b21"]
+    edge_colors = C_EDGE
     for i in range(5):
         tx = train_t[i] if train_t[i] > 0 else 0.8
         ax.scatter(tx, f1[i], s=sizes[i], c=COLORS[i],
@@ -229,8 +232,8 @@ def fig_d4_tradeoff():
                     textcoords="offset points", xytext=offsets[i],
                     fontsize=9.5, fontweight="bold", color=COLORS[i])
     ax.set_xscale("log")
-    ax.set_xlabel("Training Time (s, log scale)", fontsize=12, fontweight="bold", color="#2C3E50")
-    ax.set_ylabel("F1-Score", fontsize=12, fontweight="bold", color="#2C3E50")
+    ax.set_xlabel("Training Time (s, log scale)", fontsize=12, fontweight="bold", color="#333333")
+    ax.set_ylabel("F1-Score", fontsize=12, fontweight="bold", color="#333333")
     ax.set_ylim(0.878, 0.964)
     ax.set_xlim(0.15, 3800)
     style_ax(ax)
@@ -248,9 +251,9 @@ def fig_d5_precision_recall():
     gap = 0.02
 
     b1 = ax.bar(x - w/2 - gap, precision, w, label="Precision",
-                color="#8E44AD", edgecolor="white", linewidth=0.5, zorder=3)
+                color=C["metric_a"], edgecolor="white", linewidth=0.5, zorder=3)
     b2 = ax.bar(x + w/2 + gap, recall, w, label="Recall",
-                color="#E67E22", edgecolor="white", linewidth=0.5, zorder=3)
+                color=C["metric_b"], edgecolor="white", linewidth=0.5, zorder=3)
 
     label_bars(ax, b1, offset=0.002)
     label_bars(ax, b2, offset=0.002)
@@ -271,7 +274,7 @@ def fig_d5_precision_recall():
 
     ax.set_xticks(x)
     ax.set_xticklabels(MODELS_SHORT, fontsize=10.5)
-    ax.set_ylabel("Score", fontsize=12, fontweight="bold", color="#2C3E50")
+    ax.set_ylabel("Score", fontsize=12, fontweight="bold", color="#333333")
     ax.set_ylim(0.845, 0.978)
     ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.3f"))
     ax.legend(loc="lower right", frameon=True, fontsize=10.5,
@@ -321,7 +324,7 @@ def fig_d6_waterfall():
     
     ax.set_xticks(x)
     ax.set_xticklabels(MODELS_SHORT, fontsize=10.5)
-    ax.set_ylabel("F1-Score", fontsize=12, fontweight="bold", color="#2C3E50")
+    ax.set_ylabel("F1-Score", fontsize=12, fontweight="bold", color="#333333")
     ax.set_ylim(0.875, 0.960)
     style_ax(ax)
     fig.tight_layout()
@@ -379,26 +382,26 @@ def fig_d8_dual_axis_time():
 
     td_plot = [train_t[0], train_t[1], train_t[2], 0.5, train_t[4]]
     b1 = ax1.bar(x - w/2, td_plot, w, label="Training Time (s)",
-                 color="#3498DB", edgecolor="white", linewidth=0.5, zorder=3)
-    ax1.set_ylabel("Training Time (s)", fontsize=11, fontweight="bold", color="#2471A3")
+                 color=C["metric_a"], edgecolor="white", linewidth=0.5, zorder=3)
+    ax1.set_ylabel("Training Time (s)", fontsize=11, fontweight="bold", color=C["metric_a"])
     ax1.set_yscale("log")
     ax1.set_ylim(0.15, 3500)
-    ax1.tick_params(axis="y", colors="#2471A3")
+    ax1.tick_params(axis="y", colors=C["metric_a"])
 
     ax2 = ax1.twinx()
     b2 = ax2.bar(x + w/2, infer_t, w, label="Inference Time (s)",
-                 color="#E74C3C", edgecolor="white", linewidth=0.5, zorder=3)
-    ax2.set_ylabel("Inference Time (s)", fontsize=11, fontweight="bold", color="#C0392B")
+                 color=C["metric_b"], edgecolor="white", linewidth=0.5, zorder=3)
+    ax2.set_ylabel("Inference Time (s)", fontsize=11, fontweight="bold", color=C["metric_b"])
     ax2.set_yscale("log")
     ax2.set_ylim(0.01, 200)
-    ax2.tick_params(axis="y", colors="#C0392B")
+    ax2.tick_params(axis="y", colors=C["metric_b"])
 
     # 标注
     for i, (t_r, t_i) in enumerate(zip(td_plot, infer_t)):
         ax1.text(x[i] - w/2, t_r * 1.4 if t_r > 0 else 0.8, f"{train_t[i]:.1f}s",
-                 ha="center", fontsize=7.5, fontweight="bold", color="#2471A3")
+                 ha="center", fontsize=7.5, fontweight="bold", color=C["metric_a"])
         ax2.text(x[i] + w/2, t_i * 1.3, f"{infer_t[i]:.2f}s",
-                 ha="center", fontsize=7.5, fontweight="bold", color="#C0392B")
+                 ha="center", fontsize=7.5, fontweight="bold", color=C["metric_b"])
 
     ax1.set_xticks(x)
     ax1.set_xticklabels(MODELS_SHORT, fontsize=10)
@@ -429,8 +432,8 @@ def fig_d9_model_size():
 
     ax.set_xscale("symlog", linthresh=1)
     ax.set_xlabel("Model Parameters (Millions, log scale)", fontsize=11,
-                  fontweight="bold", color="#2C3E50")
-    ax.set_ylabel("F1-Score", fontsize=11, fontweight="bold", color="#2C3E50")
+                  fontweight="bold", color="#333333")
+    ax.set_ylabel("F1-Score", fontsize=11, fontweight="bold", color="#333333")
     ax.set_ylim(0.882, 0.964)
     ax.set_xlim(left=-0.5, right=11000)
     style_ax(ax)
