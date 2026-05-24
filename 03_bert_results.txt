@@ -1,4 +1,0 @@
-=== 03. BERT Fine-Tuning (Epochs: 8) ===
-训练耗时: 184.66 s | 测试耗时: 1.06 s
-Accuracy: 0.9517 | Precision: 0.9568 | Recall: 0.9474 | F1-Score: 0.9521
-
